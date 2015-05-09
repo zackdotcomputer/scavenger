@@ -33,7 +33,8 @@ def loginPage(request):
     else:
       hasLoginError = True
 
-  return render(request, 'server/login.html', { 'auth_url': foursquare.oauth.auth_url() })
+  context = { 'auth_url': foursquare.oauth.auth_url(), 'currentPage': 'login' }
+  return render(request, 'server/login.html', context)
 
 def handleCodeFlow(request, code, foursquare):
   access_token = foursquare.oauth.get_token(code)

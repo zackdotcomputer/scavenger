@@ -23,12 +23,27 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Home</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
+              <li role="presentation" class="{% if currentPage == 'index' %}active{% endif %}">
+                <a href="{% url 'index' %}">Home</a>
+              </li>
+            {% if user.is_authenticated %}
+              <li role="presentation" class="{% if currentPage == 'profile' %}active{% endif %}">
+                <a href="{% url 'profile' %}">Profile</a>
+              </li>
+              <li role="presentation" class="{% if currentPage == 'progress' %}active{% endif %}">
+                <a href="{% url 'progress' %}">Progress</a>
+              </li>
+              <li role="presentation">
+                <a href="{% url 'logout' %}">Logout</a>
+              </li>
+            {% else %}
+              <li role="presentation" class="{% if currentPage == 'login' %}active{% endif %}">
+                <a href="{% url 'login' %}">Login</a>
+              </li>
+            {% endif %}
           </ul>
         </nav>
-        <h3 class="text-muted">Project name</h3>
+        <h3 class="text-muted">Swarm Scavenger Hunt</h3>
       </div>
 
       {% block content %}{% endblock %}

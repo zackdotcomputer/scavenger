@@ -1,0 +1,27 @@
+{% extends "server/base.html" %}
+
+{% block title %}Your Profile{% endblock %}
+
+{% block content %}
+  <h1>Your Profile</h1>
+  <div class="profileForm">
+    <form class="col-sm-offset-2 col-sm-8" method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="yourName">Name</label>
+        <p id="yourName">{{ player.displayName }}</p>
+        <label for="yourEmail">Email</label>
+        <p id="yourEmail">{{ player.email }}</p>
+        <label for="yourProfile"><a href="{{ player.foursquareProfileHref }}">Your Foursquare Profile</a></label>
+      </div>
+      <div class="form-group">
+        <label for="phonenumber">Phone number</label>
+        <input type="phone" class="form-control" id="phonenumber" name="phonenumber"
+          value="{{ player.phone }}" />
+      </div>
+      <button type="submit" class="btn btn-success">Save</button>
+      &emsp;<strong>or</strong>&emsp;
+      <a href="{% url 'progress' %}" class="btn btn-primary">View game progress</a>
+    </form>
+  </div>
+{% endblock %}

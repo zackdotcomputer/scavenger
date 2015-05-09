@@ -9,6 +9,29 @@ class Player(models.Model):
   def __unicode__(self):
     return 'User: ' + str(self.foursqId)
 
+  def email(self):
+    if (self.user is not None and self.user.email is not None):
+      return self.user.email
+
+    return None
+
+  def foursquareProfileHref(self):
+    return 'https://foursquare.com/user/' + str(self.foursqId)
+
+  def displayName(self):
+    result = ''
+    if (self.user is not None):
+      if (len(self.user.first_name) > 0):
+        result += self.user.first_name
+        if (len(self.user.last_name) > 0):
+          result += ' '
+      if (len(self.user.last_name) > 0):
+          result += self.user.last_name
+    elif (self.shortname is not None):
+      result = self.shortname
+
+    return result
+
 class Game(models.Model):
   name = models.CharField('name', max_length=200)
   start_time = models.DateTimeField('game start')

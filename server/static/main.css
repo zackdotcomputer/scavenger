@@ -3,9 +3,20 @@
  * Created and copyright 2015 Zack Sheppard except as otherwise noted
  */
 
- footer {
+footer {
   text-align: center;
- }
+}
+
+div.profileForm {
+  overflow: hidden;
+  padding: 20px 0 30px 0;
+}
+
+div.profileForm > form {
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 20px;
+}
 
 /**
  * Below is CSS cribbed from the Jumbotron example at http://getbootstrap.com/examples/jumbotron-narrow/
