@@ -2,8 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Player(models.Model):
-  user = models.OneToOneField(User)
-  phone = models.CharField('Phone number', max_length=40)
+  user = models.OneToOneField(User, blank=True, null=True)
+  phone = models.CharField('Phone number', max_length=40, blank=True, default='')
+  shortname = models.CharField('Name', max_length=100, blank=True, default='')
   foursqId = models.BigIntegerField('Foursquare User ID')
   def __unicode__(self):
     return 'User: ' + str(self.foursqId)

@@ -1,2 +1,5 @@
 web: gunicorn --log-file - --access-logfile - --reload server.wsgi
 shell: python manage.py shell
+makemigrations: python manage.py makemigrations server
+migrate: python manage.py migrate
+seesql: python manage.py sqlmigrate server 0002

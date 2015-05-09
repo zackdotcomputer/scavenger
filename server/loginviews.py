@@ -64,7 +64,7 @@ def ensureUserExistsAndLogin(request, foursquare):
         pass
       password = str(uid) + os.environ['PASSWORD_SECRET'] # never user-facing
 
-      if existing is not None and existing.user.id is not None:
+      if existing is not None and existing.user is not None:
         user = authenticate(username=existing.user.username, password=password)
         if user is not None:
           if user.is_active:
