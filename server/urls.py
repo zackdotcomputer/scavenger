@@ -21,6 +21,7 @@ urlpatterns = [
   url(r'^admin/', include(admin.site.urls)),
   url(r'^$', views.index, name='index'),
   url(r'^login/?$', loginviews.login, name='login'),
+  url(r'^logout/?$', loginviews.handleLogout, name='logout'),
   url(r'^pushlanding$', pushlanding.handle, name='pushlanding'),
   url(r'^profile/?$', views.profile, name='profile'),
   url(r'^progress/?$', views.progress, name='progress'),

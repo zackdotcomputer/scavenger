@@ -91,6 +91,12 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
+# Authentication
+
+LOGIN_URL = '/login'
+
+LOGOUT_URL = '/logout'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
