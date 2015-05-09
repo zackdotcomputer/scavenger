@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Player(models.Model):
   user = models.OneToOneField(User, blank=True, null=True)
@@ -36,6 +37,11 @@ class Game(models.Model):
   name = models.CharField('name', max_length=200)
   start_time = models.DateTimeField('game start')
   end_time = models.DateTimeField('game end')
+
+  def isActive(self):
+    now = datetime.datetime.now()
+    return (now >= start_time and now < end_time)
+
   def __unicode__(self):
     return 'Game: ' + self.name
 
@@ -50,6 +56,7 @@ class Clue(models.Model):
 
 class Team(models.Model):
   name = models.CharField('team name', max_length=200)
+  game = models.ForeignKey(Game)
   players = models.ManyToManyField(Player)
   course = models.ManyToManyField(Clue)
   def __unicode__(self):
@@ -59,3 +66,27 @@ class Progress(models.Model):
   team = models.ForeignKey(Team)
   clue = models.ForeignKey(Clue)
   time = models.DateTimeField('solution time')
+
+# non-persisted convenience object
+class TeamGameProgress(object):
+  def __init__(self, team, progress):
+    self.team = team
+    self.progress = progress
+
+  def completedClueCount(self):
+    return len(self.progress)
+
+  def totalClueCount(self):
+    return len(self.team.course)
+
+  def nextIncompleteClue(self):
+    for clue in self.team.course:
+      hasMatch = False
+      for progress in self.progress:
+        if self.progress.id == clue.id:
+          hasMatch = True
+          break
+      if not hasMatch:
+        return clue
+
+    return None

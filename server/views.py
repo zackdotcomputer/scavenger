@@ -1,6 +1,6 @@
-from .models import Player
+from .models import Player, TeamGameProgress
+from .util import getPlayerForUser
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
@@ -10,10 +10,10 @@ def index(request):
 
 @login_required
 def profile(request):
-  try:
-    player = Player.objects.get(user=request.user)
-  except ObjectDoesNotExist as e:
-    HttpResponseRedirect(reverse('logout'))
+  player = getPlayerForUser(request)
+
+  if (player is None):
+    return HttpResponseRedirect(reverse('logout'))
 
   if ('phonenumber' in request.POST):
     player.phone = request.POST['phonenumber'];
@@ -25,4 +25,20 @@ def profile(request):
 
 @login_required
 def progress(request):
-  return HttpResponse("Hello, world. You're at the progress page.")
+  player = getPlayerForUser(request)
+
+  if (player is None)
+    return HttpResponseRedirect(reverse('logout'))
+
+  teams = player.team_set.all()
+  activeGames = []
+  inactiveGames = []
+  for team in teams:
+    if (team.game.isActive()):
+      activeGames.append(TeamGameProgress(team, Progress.objects.filter(team=team)))
+    else:
+      inactiveGames.append(TeamGameProgress(team, Progress.objects.filter(team=team)))
+
+  return render(request, 'server/progress.html', {
+    'currentPage': 'profile', 'player': player, 'games': activeGames, 'oldGames': inactiveGames
+  })

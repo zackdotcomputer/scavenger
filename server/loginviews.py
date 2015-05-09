@@ -58,11 +58,10 @@ def ensureUserExistsAndLogin(request, foursquare):
       pass
 
     if uid > 0:
-      existing = None
       try:
         existing = Player.objects.get(foursqId=uid)
       except ObjectDoesNotExist as e:
-        pass
+        existing = None
       password = str(uid) + os.environ['PASSWORD_SECRET'] # never user-facing
 
       if existing is not None and existing.user is not None:
