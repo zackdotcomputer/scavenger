@@ -1,1 +1,2 @@
 web: gunicorn --log-file - --access-logfile - --reload server.wsgi
+shell: python manage.py shell
