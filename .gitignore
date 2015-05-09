@@ -1,5 +1,4 @@
 # Django Custom Ignores
-/server/migrations/
 .env
 
 # Emacs Ignores
