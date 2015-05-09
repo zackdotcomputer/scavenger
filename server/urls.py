@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from . import views, loginviews, pushlanding
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+  url(r'^admin/', include(admin.site.urls)),
+  url(r'^$', views.index, name='index'),
+  url(r'^login/?$', loginviews.login, name='login'),
+  url(r'^pushlanding$', pushlanding.handle, name='pushlanding'),
+  url(r'^profile/?$', views.profile, name='profile'),
+  url(r'^progress/?$', views.progress, name='progress'),
 ]
