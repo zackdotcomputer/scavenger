@@ -27,18 +27,9 @@ def profile(request):
 def progress(request):
   player = getPlayerForUser(request)
 
-  if (player is None)
+  if (player is None):
     return HttpResponseRedirect(reverse('logout'))
 
-  teams = player.team_set.all()
-  activeGames = []
-  inactiveGames = []
-  for team in teams:
-    if (team.game.isActive()):
-      activeGames.append(TeamGameProgress(team, Progress.objects.filter(team=team)))
-    else:
-      inactiveGames.append(TeamGameProgress(team, Progress.objects.filter(team=team)))
-
   return render(request, 'server/progress.html', {
-    'currentPage': 'profile', 'player': player, 'games': activeGames, 'oldGames': inactiveGames
+    'currentPage': 'profile', 'player': player
   })

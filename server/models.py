@@ -2,11 +2,30 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 
+class Clue(models.Model):
+  hint = models.CharField('Clue hint text', max_length=200)
+  bonus = models.CharField('Optional bonus text', max_length=200, default='', blank=True)
+  # max solutions = 8 at 24 characters per id plus 1 separating comma
+  solutions = models.CharField('Comma separated Foursquare venue ID solutions', max_length=200)
+  def __unicode__(self):
+    return 'Clue: ' + self.hint
+
+class Team(models.Model):
+  name = models.CharField('team name', max_length=200)
+  course = models.ManyToManyField(Clue)
+  courseOrder = models.CharField('course order', max_length=200, default='')
+  def __unicode__(self):
+    return 'Team: ' + self.name
+
+  def members(self):
+    return ', '.join(player.displayName() for player in self.player_set.all())
+
 class Player(models.Model):
   user = models.OneToOneField(User, blank=True, null=True)
   phone = models.CharField('Phone number', max_length=40, blank=True, default='')
   shortname = models.CharField('Name', max_length=100, blank=True, default='')
   foursqId = models.BigIntegerField('Foursquare User ID')
+  team = models.ForeignKey(Team)
   def __unicode__(self):
     return 'User: ' + str(self.foursqId)
 
@@ -33,10 +52,16 @@ class Player(models.Model):
 
     return result
 
+class Progress(models.Model):
+  team = models.ForeignKey(Team)
+  clue = models.ForeignKey(Clue)
+  time = models.DateTimeField('solution time')
+
 class Game(models.Model):
   name = models.CharField('name', max_length=200)
   start_time = models.DateTimeField('game start')
   end_time = models.DateTimeField('game end')
+  cluesPer = models.IntegerField('clues per team', default=4)
 
   def isActive(self):
     now = datetime.datetime.now()
@@ -44,28 +69,6 @@ class Game(models.Model):
 
   def __unicode__(self):
     return 'Game: ' + self.name
-
-class Clue(models.Model):
-  game = models.ForeignKey(Game)
-  hint = models.CharField('Clue hint text', max_length=200)
-  bonus = models.CharField('Optional bonus text', max_length=200)
-  # max solutions = 8 at 24 characters per id plus 1 separating comma
-  solutions = models.CharField('Comma separated Foursquare venue ID solutions', max_length=200)
-  def __unicode__(self):
-    return 'Clue: ' + self.hint
-
-class Team(models.Model):
-  name = models.CharField('team name', max_length=200)
-  game = models.ForeignKey(Game)
-  players = models.ManyToManyField(Player)
-  course = models.ManyToManyField(Clue)
-  def __unicode__(self):
-    return 'Team: ' + self.name
-
-class Progress(models.Model):
-  team = models.ForeignKey(Team)
-  clue = models.ForeignKey(Clue)
-  time = models.DateTimeField('solution time')
 
 # non-persisted convenience object
 class TeamGameProgress(object):
@@ -80,10 +83,11 @@ class TeamGameProgress(object):
     return len(self.team.course)
 
   def nextIncompleteClue(self):
-    for clue in self.team.course:
+    explodedIds = self.team.courseOrder.split(',')
+    for clueId in explodedIds:
       hasMatch = False
       for progress in self.progress:
-        if self.progress.id == clue.id:
+        if str(self.progress.id) == clueId:
           hasMatch = True
           break
       if not hasMatch:
