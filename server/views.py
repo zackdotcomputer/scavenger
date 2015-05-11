@@ -17,8 +17,12 @@ def profile(request):
 
   if ('phonenumber' in request.POST):
     player.phone = request.POST['phonenumber'];
-    if (not player.phone.startswith('+')):
-      player.phone = '+1' + player.phone
+    if (not phone.startswith("+")):
+      if (phone.startswith("1")):
+        phone = "+" + phone
+      else:
+        phone = "+1" + phone
+
     player.save()
 
   return render(request, 'server/profile.html', {'currentPage': 'profile', 'player': player})

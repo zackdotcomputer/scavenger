@@ -73,6 +73,12 @@ def ensureUserExistsAndLogin(request, foursquare):
       else:
         email = me.get('contact', {}).get('email', '')
         phone = me.get('contact', {}).get('phone', '')
+        if (not phone.startswith("+")):
+          if (phone.startswith("1")):
+            phone = "+" + phone
+          else:
+            phone = "+1" + phone
+
         theUser = User.objects.create_user(str(uid), email, password)
         theUser.first_name = me.get('firstName', '')
         theUser.last_name = me.get('lastName', '')
