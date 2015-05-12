@@ -41,6 +41,9 @@ def handle(request):
   return HttpResponse("") # Generic 200
 
 def sendHintToNextClue(player):
+  if (len(player.phone) < 1):
+    logger.error("No Phone! Can't send clue to player " + str(player.foursqId))
+    raise ValueError("can't text a user with no phone")
   nextClue = player.team.nextIncompleteClue();
   account_sid = os.environ['TWILIO_SID']
   auth_token  = os.environ['TWILIO_AUTH_TOKEN']
