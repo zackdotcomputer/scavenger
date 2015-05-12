@@ -10,6 +10,9 @@ class Clue(models.Model):
   def __unicode__(self):
     return 'Clue: ' + self.hint
 
+  def solutionsIdsList(self):
+    return self.solutions.split(',')
+
 class Team(models.Model):
   name = models.CharField('team name', max_length=200)
   course = models.ManyToManyField(Clue)
@@ -19,6 +22,23 @@ class Team(models.Model):
 
   def members(self):
     return ', '.join(player.displayName() for player in self.player_set.all())
+
+  def completedClueCount(self):
+    return self.progress_set.count()
+
+  def totalClueCount(self):
+    return self.course.count()
+
+  def nextIncompleteClue(self):
+    explodedIds = self.courseOrder.split(',')
+    for clueId in explodedIds:
+      hasMatch = (Progress.objects.filter(team=self, clue_id=int(clueId)).count() > 0)
+      if not hasMatch:
+        for clue in self.course.all():
+          if str(clue.id) == clueId:
+            return clue
+
+    return None
 
 class Player(models.Model):
   user = models.OneToOneField(User, blank=True, null=True)
@@ -55,7 +75,7 @@ class Player(models.Model):
 class Progress(models.Model):
   team = models.ForeignKey(Team)
   clue = models.ForeignKey(Clue)
-  time = models.DateTimeField('solution time')
+  time = models.DateTimeField('solution time', auto_now_add=True)
 
 class Game(models.Model):
   name = models.CharField('name', max_length=200)
@@ -70,28 +90,3 @@ class Game(models.Model):
 
   def __unicode__(self):
     return 'Game: ' + self.name
-
-# non-persisted convenience object
-class TeamGameProgress(object):
-  def __init__(self, team, progress):
-    self.team = team
-    self.progress = progress
-
-  def completedClueCount(self):
-    return len(self.progress)
-
-  def totalClueCount(self):
-    return len(self.team.course)
-
-  def nextIncompleteClue(self):
-    explodedIds = self.team.courseOrder.split(',')
-    for clueId in explodedIds:
-      hasMatch = False
-      for progress in self.progress:
-        if str(self.progress.id) == clueId:
-          hasMatch = True
-          break
-      if not hasMatch:
-        return clue
-
-    return None

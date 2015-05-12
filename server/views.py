@@ -1,4 +1,4 @@
-from .models import Player, TeamGameProgress
+from .models import Player
 from .util import getPlayerForUser
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -17,11 +17,11 @@ def profile(request):
 
   if ('phonenumber' in request.POST):
     player.phone = request.POST['phonenumber'];
-    if (not phone.startswith("+")):
-      if (phone.startswith("1")):
-        phone = "+" + phone
+    if (not player.phone.startswith("+")):
+      if (player.phone.startswith("1")):
+        player.phone = "+" + player.phone
       else:
-        phone = "+1" + phone
+        player.phone = "+1" + player.phone
 
     player.save()
 
