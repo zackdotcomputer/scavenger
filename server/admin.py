@@ -39,7 +39,7 @@ class TeamAdmin(admin.ModelAdmin):
 
 class GameAdmin(admin.ModelAdmin):
   fieldsets = [
-    (None,               {'fields': ['name', 'cluesPer']}),
+    (None,               {'fields': ['name', 'cluesPer', 'initialVenueId']}),
     ('Valid from', {'fields': ['start_time', 'end_time']}),
   ]
   list_display = ('name', 'start_time')
