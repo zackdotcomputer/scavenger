@@ -1,5 +1,6 @@
 import logging
 import os
+import json
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 
@@ -11,6 +12,10 @@ logger = logging.getLogger('django')
 def handle(request):
   if (request.method != 'POST'):
     raise Http404
+  logger.info("Received a push notification")
+  rawCheckin = request.POST['checkin']
+  checkin = json.loads(rawCheckin)
+  logger.info(rawCheckin)
   return HttpResponse("Hello, world. You're at the push page.")
 
 def testSms(request):
