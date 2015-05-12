@@ -62,6 +62,7 @@ class Game(models.Model):
   start_time = models.DateTimeField('game start')
   end_time = models.DateTimeField('game end')
   cluesPer = models.IntegerField('clues per team', default=4)
+  initialVenueId = models.CharField('inital venue id', max_length=30, default='')
 
   def isActive(self):
     now = datetime.datetime.now()
