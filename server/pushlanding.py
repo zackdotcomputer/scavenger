@@ -1,7 +1,7 @@
 import logging
 import os
 import json
-from .models import Player, Progress
+from .models import Game, Player, Progress
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
