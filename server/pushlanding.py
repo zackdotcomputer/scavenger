@@ -30,7 +30,7 @@ def handle(request):
 
   if (player is not None and len(venueId) > 0):
     nextClue = player.team.nextIncompleteClue()
-    if (venueId in nextClue.solutionIdsList):
+    if (venueId in nextClue.solutionsIdsList()):
       Progress(team=team, clue=clue).save() # mark this clue complete
       sendHintToNextClue(player)
     elif (venueId == Game.objects.all()[0].initialVenueId):
