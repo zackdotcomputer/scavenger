@@ -24,6 +24,5 @@ urlpatterns = [
   url(r'^logout/?$', loginviews.handleLogout, name='logout'),
   url(r'^profile/?$', views.profile, name='profile'),
   url(r'^progress/?$', views.progress, name='progress'),
-  url(r'^pushlanding$', pushlanding.handle, name='pushlanding'),
-  url(r'^testsms$', pushlanding.testSms, name='testsms'),
+  url(r'^pushlanding$', pushlanding.handle, name='pushlanding')
 ]
