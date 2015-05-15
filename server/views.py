@@ -35,5 +35,8 @@ def progress(request):
     return HttpResponseRedirect(reverse('logout'))
 
   return render(request, 'server/progress.html', {
-    'currentPage': 'progress', 'player': player, 'clues': player.team.completedCluesAndNext()
+    'currentPage': 'progress',
+    'player': player,
+    'clues': player.team.completedCluesAndNext(),
+    'progressPercent': (float(player.team.completedClueCount()) / float(player.team.totalClueCount()))
   })

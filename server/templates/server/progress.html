@@ -6,12 +6,17 @@
   <div class="profileForm">
     <div class="col-sm-offset-2 col-sm-8">
       <div class="form-group">
-        <h4>Your Progress</h4>
         <label for="yourTeam">Team Name</label>
         <p id="yourTeam">{{ player.team.name }}</p>
         <label for="yourProgress">Completed Clues</label>
-        <p id="yourProgress">{{ player.team.completedClueCount }} out of {{ player.team.totalClueCount }}</p>
-        <label for="allClues">All Your Clues</label>
+        <div class="progress" id="yourProgress">
+          <div class="progress-bar" role="progressbar"
+            aria-valuenow="{{ progressPercent }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ progressPercent }}%">
+            <span>{{ player.team.completedClueCount }} out of {{ player.team.totalClueCount }}</span>
+          </div>
+        </div>
+        <br />
+        <h4 for="allClues">Your Clues</h4>
         {% for clue in clues %}
           <div class="clue">
             <label for="clueHint">Clue</label>
