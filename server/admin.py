@@ -50,7 +50,7 @@ class ClueAdmin(admin.ModelAdmin):
 
 class PlayerAdmin(admin.ModelAdmin):
   fieldsets = [
-    (None,          {'fields': ['shortname', 'foursqId', 'phone']}),
+    (None,          {'fields': ['shortname', 'foursqId', 'phone', 'team']}),
     ('Linked User', {'fields': ['user']}),
   ]
   list_display = ('displayName', 'foursqId', 'phone')
