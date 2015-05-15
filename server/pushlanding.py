@@ -15,6 +15,10 @@ def handle(request):
   if (request.method != 'POST'):
     raise Http404
 
+  if (not Game.objects.all()[0].isActive()):
+    logger.info("Ignoring push because game is not active")
+    return HttpResponse("")
+
   logger.info("Received a push notification")
 
   rawCheckin = request.POST['checkin']
