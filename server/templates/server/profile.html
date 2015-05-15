@@ -3,9 +3,9 @@
 {% block title %}Your Profile{% endblock %}
 
 {% block content %}
-  <h1>Your Profile</h1>
   <div class="profileForm">
     <form class="col-sm-offset-2 col-sm-8" method="POST">
+      <h3>Your Profile</h3>
       {% csrf_token %}
       <div class="form-group">
         <label for="phonenumber">Phone number</label>
