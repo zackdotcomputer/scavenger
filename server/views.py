@@ -35,5 +35,5 @@ def progress(request):
     return HttpResponseRedirect(reverse('logout'))
 
   return render(request, 'server/progress.html', {
-    'currentPage': 'profile', 'player': player
+    'currentPage': 'progress', 'player': player, 'clues': player.team.completedCluesAndNext()
   })

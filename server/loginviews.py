@@ -64,10 +64,14 @@ def ensureUserExistsAndLogin(request, foursquare):
         existing = None
       password = str(uid) + os.environ['PASSWORD_SECRET'] # never user-facing
 
+      logger.info("Trying to load player")
+
       if existing is not None and existing.user is not None:
+        logger.info("Attempting log in to existing player and user")
         user = authenticate(username=existing.user.username, password=password)
         if user is not None:
           if user.is_active:
+            logger.info("Completed log in to existing player and user")
             login(request, user)
             return True
       else:

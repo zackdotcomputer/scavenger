@@ -4,5 +4,23 @@
 
 {% block content %}
   <h1>Your Progress</h1>
-  <p>coming soon!</p>
+  <div class="profileForm">
+    <div class="col-sm-offset-2 col-sm-8">
+      <div class="form-group">
+        <label for="yourTeam">Team Name</label>
+        <p id="yourTeam">{{ player.team.name }}</p>
+        <label for="yourProgress">Completed Clues</label>
+        <p id="yourProgress">{{ player.team.completedClueCount }} out of {{ player.team.totalClueCount }}</p>
+        <label for="allClues">All Your Clues</label>
+        {% for clue in clues %}
+          <div class="clue">
+            <h3>Clue</h3>
+            <p>{% clue.hint %}</p>
+            <h3>Bonus points</h3>
+            <p>{% clue.bonus %}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 {% endblock %}

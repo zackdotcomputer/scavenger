@@ -29,6 +29,21 @@ class Team(models.Model):
   def totalClueCount(self):
     return self.course.count()
 
+  def completedCluesAndNext(self):
+    result = [];
+    explodedIds = self.courseOrder.split(',')
+    for clueId in explodedIds:
+      hasMatch = (Progress.objects.filter(team=self, clue_id=int(clueId)).count() > 0)
+      for clue in self.course.all():
+          if str(clue.id) == clueId:
+            result.append(clue)
+            break;
+
+      if not hasMatch:
+        break
+
+    return result
+
   def nextIncompleteClue(self):
     explodedIds = self.courseOrder.split(',')
     for clueId in explodedIds:
