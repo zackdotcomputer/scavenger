@@ -10,13 +10,13 @@
       {% if updated %}
         <div class="success">Saved!</div>
       {% endif %}
-      <div class="form-group has-success">
+      <div class="form-group {% if updated %}has-success{% endif %}">
         <label for="phonenumber">Phone number</label>
         <input type="phone" class="form-control" id="phonenumber" name="phonenumber"
           value="{{ player.phone }}" />
 
-        <label>
-          <input type="checkbox" class="form-control" id="sendText" name="sendText" value="true">
+        <label class="form-control">
+          <input type="checkbox" id="sendText" name="sendText" value="true">
           Send me a text to make sure it worked
         </label>
       </div>
