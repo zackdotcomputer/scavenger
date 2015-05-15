@@ -3,10 +3,10 @@
 {% block title %}Your Progress{% endblock %}
 
 {% block content %}
-  <h1>Your Progress</h1>
   <div class="profileForm">
     <div class="col-sm-offset-2 col-sm-8">
       <div class="form-group">
+        <h4>Your Progress</h4>
         <label for="yourTeam">Team Name</label>
         <p id="yourTeam">{{ player.team.name }}</p>
         <label for="yourProgress">Completed Clues</label>
@@ -14,10 +14,10 @@
         <label for="allClues">All Your Clues</label>
         {% for clue in clues %}
           <div class="clue">
-            <h3>Clue</h3>
-            <p>{{ clue.hint }}</p>
-            <h3>Bonus points</h3>
-            <p>{{ clue.bonus }}</p>
+            <label for="clueHint">Clue</label>
+            <p id="clueHint">{{ clue.hint }}</p>
+            <label for="clueBonus">Bonus points</label>
+            <p id="clueBonus">{{ clue.bonus }}</p>
           </div>
         {% endfor %}
       </div>
