@@ -1,3 +1,4 @@
+import logging
 import os
 from .models import Player, Game
 from .util import getPlayerForUser, twilioClient
