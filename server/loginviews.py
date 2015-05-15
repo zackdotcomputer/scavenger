@@ -75,6 +75,8 @@ def ensureUserExistsAndLogin(request, foursquare):
             login(request, user)
             return True
       else:
+        logger.info("Creating a new user")
+
         email = me.get('contact', {}).get('email', '')
         phone = me.get('contact', {}).get('phone', '')
         if (not phone.startswith("+")):
@@ -96,6 +98,8 @@ def ensureUserExistsAndLogin(request, foursquare):
           thePlayer.phone = phone
 
         thePlayer.save()
+
+        authenticate(username=theUser.username, password=password)
 
         return True
 
