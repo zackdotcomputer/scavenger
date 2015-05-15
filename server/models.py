@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 import datetime
 
 class Clue(models.Model):
@@ -102,7 +103,7 @@ class Game(models.Model):
   initialVenueId = models.CharField('inital venue id', max_length=30, default='')
 
   def isActive(self):
-    now = datetime.datetime.now()
+    now = timezone.now()
     return (now >= self.start_time and now < self.end_time)
 
   def __unicode__(self):
