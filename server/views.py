@@ -1,3 +1,4 @@
+import os
 from .models import Player, Game
 from .util import getPlayerForUser
 from django.contrib.auth.decorators import login_required
@@ -26,6 +27,15 @@ def profile(request):
 
     player.save()
     updatedUser = True
+
+    if ('sendText' in request.POST):
+      client = util.twilioClient()
+      message = client.messages.create(
+        body = "Yeah, it worked",
+        to = player.phone,    # Replace with your phone number
+        from_ = os.environ['TWILIO_PHONE']
+      )
+      logger.info("Sent test ping to player id " + str(player.foursqId) + " with message sid " + message.sid)
 
   return render(request, 'server/profile.html', {'currentPage': 'profile', 'player': player, 'updated': updatedUser})
 

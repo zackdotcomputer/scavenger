@@ -1,12 +1,11 @@
 import logging
 import os
 import json
+from . import util
 from .models import Game, Player, Progress
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
-
-from twilio.rest import TwilioRestClient
 
 logger = logging.getLogger('django')
 
@@ -50,9 +49,7 @@ def sendHintToNextClue(player):
     logger.error("No Phone! Can't send clue to player " + str(player.foursqId))
   else:
     nextClue = player.team.nextIncompleteClue();
-    account_sid = os.environ['TWILIO_SID']
-    auth_token  = os.environ['TWILIO_AUTH_TOKEN']
-    client = TwilioRestClient(account_sid, auth_token)
+    client = util.twilioClient()
 
     if (nextClue is not None):
       message = client.messages.create(

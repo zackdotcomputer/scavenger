@@ -3,6 +3,7 @@ import foursquare
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Player
+from twilio.rest import TwilioRestClient
 
 def foursquareClient():
   return foursquare.Foursquare(
@@ -16,3 +17,8 @@ def getPlayerForUser(request):
     return Player.objects.get(user=request.user)
   except ObjectDoesNotExist as e:
     return None
+
+def twilioClient():
+  account_sid = os.environ['TWILIO_SID']
+  auth_token  = os.environ['TWILIO_AUTH_TOKEN']
+  return TwilioRestClient(account_sid, auth_token)
