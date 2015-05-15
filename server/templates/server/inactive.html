@@ -1,0 +1,15 @@
+{% extends "server/base.html" %}
+
+{% block title %}Your Progress{% endblock %}
+
+{% block content %}
+  <div class="profileForm">
+    <div class="col-sm-offset-2 col-sm-8">
+      <div class="form-group">
+        <label for="yourTeam">Team Name</label>
+        <p id="yourTeam">{{ player.team.name }}</p>
+        <p class="lead">The game hasn't started yet! Have some patience!</p>
+      </div>
+    </div>
+  </div>
+{% endblock %}

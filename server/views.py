@@ -34,6 +34,14 @@ def progress(request):
   if (player is None):
     return HttpResponseRedirect(reverse('logout'))
 
+  if (not Game.objects.all()[0].isActive()):
+    return render(request, 'server/inactive.html', {
+      'currentPage': 'progress',
+      'player': player,
+      'clues': player.team.completedCluesAndNext(),
+      'progressPercent': (float(player.team.completedClueCount()) / float(player.team.totalClueCount()))
+    })
+
   return render(request, 'server/progress.html', {
     'currentPage': 'progress',
     'player': player,
