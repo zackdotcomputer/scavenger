@@ -46,13 +46,14 @@ class Team(models.Model):
     return result
 
   def nextIncompleteClue(self):
-    explodedIds = self.courseOrder.split(',')
-    for clueId in explodedIds:
-      hasMatch = (Progress.objects.filter(team=self, clue_id=int(clueId)).count() > 0)
-      if not hasMatch:
-        for clue in self.course.all():
-          if str(clue.id) == clueId:
-            return clue
+    if (len(self.courseOrder) > 0):
+      explodedIds = self.courseOrder.split(',')
+      for clueId in explodedIds:
+        hasMatch = (Progress.objects.filter(team=self, clue_id=int(clueId)).count() > 0)
+        if not hasMatch:
+          for clue in self.course.all():
+            if str(clue.id) == clueId:
+              return clue
 
     return None
 
@@ -102,7 +103,7 @@ class Game(models.Model):
 
   def isActive(self):
     now = datetime.datetime.now()
-    return (now >= start_time and now < end_time)
+    return (now >= self.start_time and now < self.end_time)
 
   def __unicode__(self):
     return 'Game: ' + self.name
