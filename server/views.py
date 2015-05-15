@@ -1,6 +1,6 @@
 import os
 from .models import Player, Game
-from .util import getPlayerForUser
+from .util import getPlayerForUser, twilioClient
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
@@ -29,7 +29,7 @@ def profile(request):
     updatedUser = True
 
     if ('sendText' in request.POST):
-      client = util.twilioClient()
+      client = twilioClient()
       message = client.messages.create(
         body = "Yeah, it worked",
         to = player.phone,    # Replace with your phone number
