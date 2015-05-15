@@ -31,16 +31,17 @@ class Team(models.Model):
 
   def completedCluesAndNext(self):
     result = [];
-    explodedIds = self.courseOrder.split(',')
-    for clueId in explodedIds:
-      hasMatch = (Progress.objects.filter(team=self, clue_id=int(clueId)).count() > 0)
-      for clue in self.course.all():
-          if str(clue.id) == clueId:
-            result.append(clue)
-            break;
+    if (len(self.courseOrder) > 0):
+      explodedIds = self.courseOrder.split(',')
+      for clueId in explodedIds:
+        hasMatch = (Progress.objects.filter(team=self, clue_id=int(clueId)).count() > 0)
+        for clue in self.course.all():
+            if str(clue.id) == clueId:
+              result.append(clue)
+              break;
 
-      if not hasMatch:
-        break
+        if not hasMatch:
+          break
 
     return result
 
