@@ -60,7 +60,7 @@ class Player(models.Model):
   phone = models.CharField('Phone number', max_length=40, blank=True, default='')
   shortname = models.CharField('Name', max_length=100, blank=True, default='')
   foursqId = models.BigIntegerField('Foursquare User ID')
-  team = models.ForeignKey(Team)
+  team = models.ForeignKey(Team, null=True)
   def __unicode__(self):
     return 'User: ' + str(self.foursqId)
 
