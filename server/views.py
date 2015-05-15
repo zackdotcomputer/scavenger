@@ -1,4 +1,4 @@
-from .models import Player
+from .models import Player, Game
 from .util import getPlayerForUser
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
