@@ -6,6 +6,8 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 
+logger = logging.getLogger('django')
+
 def index(request):
   return render(request, 'server/index.html', {'currentPage': 'index'})
 
