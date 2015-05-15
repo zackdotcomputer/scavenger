@@ -34,7 +34,7 @@ class TeamAdmin(admin.ModelAdmin):
     (None,          {'fields': ['name']}),
   ]
   inlines = [PlayerInline]
-  list_display = ('name', 'members')
+  list_display = ('name', 'members', 'courseOrder', 'completedClueCount')
   actions = [randomizeTeamClues]
 
 class GameAdmin(admin.ModelAdmin):
@@ -46,7 +46,7 @@ class GameAdmin(admin.ModelAdmin):
 
 class ClueAdmin(admin.ModelAdmin):
   fieldsets = [(None, {'fields': ['hint', 'bonus', 'solutions']})]
-  list_display = ('hint', 'solutions')
+  list_display = ('id', 'hint', 'solutions')
 
 class PlayerAdmin(admin.ModelAdmin):
   fieldsets = [
