@@ -34,11 +34,12 @@ def handle(request):
 
   if (player is not None and len(venueId) > 0):
     nextClue = player.team.nextIncompleteClue()
-    if (venueId in nextClue.solutionsIdsList()):
-      Progress(team=player.team, clue=nextClue).save() # mark this clue complete
-      sendHintToNextClue(player)
-    elif (venueId == Game.objects.all()[0].initialVenueId):
-      sendHintToNextClue(player)
+    if (nextClue is not None):
+      if (venueId in nextClue.solutionsIdsList()):
+        Progress(team=player.team, clue=nextClue).save() # mark this clue complete
+        sendHintToNextClue(player)
+      elif (venueId == Game.objects.all()[0].initialVenueId):
+        sendHintToNextClue(player)
   else:
     logger.error("Push notification for unknown user ID: " + str(uid))
 
@@ -47,24 +48,33 @@ def handle(request):
 def sendHintToNextClue(player):
   if (len(player.phone) < 1):
     logger.error("No Phone! Can't send clue to player " + str(player.foursqId))
-    raise ValueError("can't text a user with no phone")
-  nextClue = player.team.nextIncompleteClue();
-  account_sid = os.environ['TWILIO_SID']
-  auth_token  = os.environ['TWILIO_AUTH_TOKEN']
-  client = TwilioRestClient(account_sid, auth_token)
+  else:
+    nextClue = player.team.nextIncompleteClue();
+    account_sid = os.environ['TWILIO_SID']
+    auth_token  = os.environ['TWILIO_AUTH_TOKEN']
+    client = TwilioRestClient(account_sid, auth_token)
 
-  message = client.messages.create(
-    body = nextClue.hint,
-    to = player.phone,    # Replace with your phone number
-    from_ = os.environ['TWILIO_PHONE']
-  )
+    if (nextClue is not None):
+      message = client.messages.create(
+        body = nextClue.hint,
+        to = player.phone,    # Replace with your phone number
+        from_ = os.environ['TWILIO_PHONE']
+      )
 
-  logger.info("Sent clue to player id " + str(player.foursqId) + " with message sid " + message.sid)
+      logger.info("Sent clue to player id " + str(player.foursqId) + " with message sid " + message.sid)
 
-  if (len(nextClue.bonus) > 0):
-    bonusSid = client.messages.create(
-      body = nextClue.bonus,
-      to = player.phone,    # Replace with your phone number
-      from_ = os.environ['TWILIO_PHONE']
-    )
-    logger.info("Sent bonus to player id " + str(player.foursqId) + " with message sid " + message.sid)
+      if (len(nextClue.bonus) > 0):
+        bonusSid = client.messages.create(
+          body = nextClue.bonus,
+          to = player.phone,    # Replace with your phone number
+          from_ = os.environ['TWILIO_PHONE']
+        )
+        logger.info("Sent bonus to player id " + str(player.foursqId) + " with message sid " + message.sid)
+    else:
+      message = client.messages.create(
+        body = "Congratulations, you've found all the venues for your team! Enjoy the rest of your day!",
+        to = player.phone,    # Replace with your phone number
+        from_ = os.environ['TWILIO_PHONE']
+      )
+
+      logger.info("Sent game completion to player id " + str(player.foursqId) + " with message sid " + message.sid)
