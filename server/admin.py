@@ -11,7 +11,7 @@ class ClueInline(admin.StackedInline):
 class PlayerInline(admin.StackedInline):
   model = Player
   fieldsets = [(None, {'fields': ['shortname', 'foursqId']})]
-  extra = 3
+  extra = 10
 
 def randomizeTeamClues(modeladmin, request, queryset):
   teams = queryset.all()
