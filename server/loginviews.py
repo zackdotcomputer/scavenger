@@ -99,9 +99,12 @@ def ensureUserExistsAndLogin(request, foursquare):
 
         thePlayer.save()
 
-        authenticate(username=theUser.username, password=password)
-
-        return True
+        user = authenticate(username=theUser.username, password=password)
+        if user is not None:
+          if user.is_active:
+            logger.info("Completed log in to new user")
+            login(request, user)
+            return True
 
   return False
 
