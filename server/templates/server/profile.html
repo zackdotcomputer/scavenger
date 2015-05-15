@@ -7,7 +7,10 @@
     <form class="col-sm-offset-2 col-sm-8" method="POST">
       <h3>Your Profile</h3>
       {% csrf_token %}
-      <div class="form-group">
+      {% if updated %}
+        <div class="success">Saved!</div>
+      {% endif %}
+      <div class="form-group has-success">
         <label for="phonenumber">Phone number</label>
         <input type="phone" class="form-control" id="phonenumber" name="phonenumber"
           value="{{ player.phone }}" />

@@ -15,6 +15,7 @@ def profile(request):
   if (player is None):
     return HttpResponseRedirect(reverse('logout'))
 
+  updatedUser = False
   if ('phonenumber' in request.POST):
     player.phone = request.POST['phonenumber'];
     if (not player.phone.startswith("+")):
@@ -24,8 +25,9 @@ def profile(request):
         player.phone = "+1" + player.phone
 
     player.save()
+    updatedUser = True
 
-  return render(request, 'server/profile.html', {'currentPage': 'profile', 'player': player})
+  return render(request, 'server/profile.html', {'currentPage': 'profile', 'player': player, 'updated': updatedUser})
 
 @login_required
 def progress(request):
