@@ -15,9 +15,9 @@
         {% for clue in clues %}
           <div class="clue">
             <h3>Clue</h3>
-            <p>{% clue.hint %}</p>
+            <p>{{ clue.hint }}</p>
             <h3>Bonus points</h3>
-            <p>{% clue.bonus %}</p>
+            <p>{{ clue.bonus }}</p>
           </div>
         {% endfor %}
       </div>
